@@ -26,7 +26,7 @@ ggplot(data=activity_by_day, aes(total_steps)) + geom_histogram(binwidth=1000) +
     labs(x="Total number of steps taken each day")
 ```
 
-![](PA1_template_files/figure-html/summarize data and plot histrogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 
 ```r
@@ -64,7 +64,7 @@ ggplot(data=activity_by_interval, aes(x=interval, y=average_steps)) + geom_line(
     labs(title="Average number of steps taken for each 5-minute interval across all days") 
 ```
 
-![](PA1_template_files/figure-html/summarize data and plot time series-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -137,7 +137,7 @@ ggplot(data=activity_data_merge_by_day, aes(total_steps)) + geom_histogram(binwi
     labs(x="Total number of steps taken each day")
 ```
 
-![](PA1_template_files/figure-html/summarize data and plot histrogram with new dataset-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 
 ```r
@@ -213,4 +213,4 @@ ggplot(data=activity_by_interval_and_week_part, aes(x=interval, y=average_steps)
     labs(title="Average number of steps taken for each 5-minute interval across all weekdays or weekends") 
 ```
 
-![](PA1_template_files/figure-html/create a plot of weekdays vs weekends-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-16-1.png)<!-- -->

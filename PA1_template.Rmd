@@ -12,7 +12,7 @@ options(scipen=999)
 
 ## Loading and preprocessing the data
 
-```{r load data, echo=TRUE}
+```{r, echo=TRUE}
 unzip(zipfile = 'activity.zip')
 activity_data <- read.csv(file="activity.csv", header=T)
 ```
@@ -20,7 +20,7 @@ activity_data <- read.csv(file="activity.csv", header=T)
 
 ## What is mean total number of steps taken per day?
 
-```{r summarize data and plot histrogram, echo=TRUE}
+```{r, echo=TRUE}
 library(ggplot2)
 library(plyr)
 
@@ -32,12 +32,12 @@ ggplot(data=activity_by_day, aes(total_steps)) + geom_histogram(binwidth=1000) +
     labs(x="Total number of steps taken each day")
 ```
 
-```{r calculate mean, echo=TRUE}
+```{r, echo=TRUE}
 mean_total_steps_by_day <-  mean(activity_by_day$total_steps, na.rm=T)
 mean_total_steps_by_day
 ```
 
-```{r calculate median, echo=TRUE}
+```{r, echo=TRUE}
 median_total_steps_by_day <-  median(activity_by_day$total_steps, na.rm=T)
 median_total_steps_by_day
 ```
@@ -49,7 +49,7 @@ The median total number of steps taken each day is `r round(median_total_steps_b
 
 ## What is the average daily activity pattern?
 
-```{r summarize data and plot time series, echo=TRUE}
+```{r, echo=TRUE}
 activity_by_interval <- ddply(activity_data, "interval", summarize, average_steps = mean(steps, na.rm=T))
 
 ggplot(data=activity_by_interval, aes(x=interval, y=average_steps)) + geom_line() +
@@ -59,7 +59,7 @@ ggplot(data=activity_by_interval, aes(x=interval, y=average_steps)) + geom_line(
 
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r get interval with max steps, echo=TRUE}
+```{r, echo=TRUE}
 interval_with_max_steps <- activity_by_interval[which.max(activity_by_interval$average_steps),]
 interval_with_max_steps
 ```
@@ -69,7 +69,7 @@ The `r interval_with_max_steps$interval` 5-minute interval contains the maximum 
 
 ## Imputing missing values
 
-```{r count NA rows, echo=TRUE, results="hide"}
+```{r, echo=TRUE, results="hide"}
 sum(is.na(activity_data$steps))
 ```
 
@@ -77,7 +77,7 @@ Based on the dataset, there are `r sum(is.na(activity_data$steps))` rows with mi
 
 Fill in all the missing values with the mean for its 5-minute interval
 
-```{r fill up NA rows, echo=TRUE}
+```{r, echo=TRUE}
 activity_data_merge = merge(activity_data, activity_by_interval, by = "interval")
 
 activity_data_merge$steps_modified = ifelse(is.na(activity_data_merge$steps),activity_data_merge$average_steps, activity_data_merge$steps) 
@@ -85,30 +85,30 @@ activity_data_merge$steps_modified = ifelse(is.na(activity_data_merge$steps),act
 
 Let's see the sample of the new dataset
 
-```{r load required library, echo=TRUE, results="hide",message=FALSE}
+```{r, echo=TRUE, results="hide",message=FALSE}
 library(dplyr)
 ```
 
-```{r show example of dataset, echo=TRUE}
+```{r, echo=TRUE}
 set.seed(10)
 sample_n(activity_data_merge, 10)
 ```
 
 Let's look at the histrogram of the new dataset
 
-```{r summarize data and plot histrogram with new dataset, echo=TRUE}
+```{r, echo=TRUE}
 activity_data_merge_by_day <- ddply(activity_data_merge, "date", summarize, total_steps = sum(steps_modified, na.rm=T))
 
 ggplot(data=activity_data_merge_by_day, aes(total_steps)) + geom_histogram(binwidth=1000) + 
     labs(x="Total number of steps taken each day")
 ```
 
-```{r calculate mean of the new dataset, echo=TRUE}
+```{r, echo=TRUE}
 mean_by_day <-  mean(activity_data_merge_by_day$total_steps, na.rm=T)
 mean_by_day
 ```
 
-```{r calculate median of the new dataset, echo=TRUE}
+```{r, echo=TRUE}
 median_by_day <-  median(activity_data_merge_by_day$total_steps, na.rm=T)
 median_by_day
 ```
@@ -125,7 +125,7 @@ We could see that after imputing the NA values, the mean and median of the total
 
 Create a new factor variable "week_part" in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r create new factor to differentiate weekday and weekend, echo=TRUE}
+```{r, echo=TRUE}
 activity_data_merge$weekday <- weekdays(as.Date(activity_data_merge$date))
 
 activity_data_merge$week_part <- ifelse(activity_data_merge$weekday %in% c('Saturday','Sunday'), 'weekend','weekday') 
@@ -133,7 +133,7 @@ activity_data_merge$week_part <- ifelse(activity_data_merge$weekday %in% c('Satu
 
 Let's see the sample of the data
 
-```{r show example of dataset 2, echo=TRUE, result="asis"}
+```{r, echo=TRUE, result="asis"}
 set.seed(15)
 options(width = 100)
 sample_n(activity_data_merge, 10)
@@ -141,7 +141,7 @@ sample_n(activity_data_merge, 10)
 
 Look at the average number of steps taken, averaged across all weekdays or weekends 
 
-```{r create a plot of weekdays vs weekends, echo=TRUE, fig.width=8}
+```{r, echo=TRUE, fig.width=8}
 activity_by_interval_and_week_part <- ddply(activity_data_merge, c("week_part", "interval"), summarize, average_steps = mean(steps_modified, na.rm=T))
 
 ggplot(data=activity_by_interval_and_week_part, aes(x=interval, y=average_steps)) + geom_line() +
